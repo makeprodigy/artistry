@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Star, MapPin, Clock } from "lucide-react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { type Artist } from "../data/artists";
 
 interface ArtistCardProps {
@@ -53,9 +54,11 @@ export default function ArtistCard({ artist, index = 0, viewMode = 'grid' }: Art
           <div className="flex flex-col md:flex-row">
             {/* Artist Image */}
             <div className="relative w-full md:w-48 h-48 md:h-32 flex-shrink-0 overflow-hidden">
-              <img
+              <Image
                 src={artist.image}
                 alt={artist.name}
+                width={192}
+                height={128}
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/20 via-transparent to-transparent md:to-black/20" />
@@ -261,9 +264,11 @@ export default function ArtistCard({ artist, index = 0, viewMode = 'grid' }: Art
       <Card className="overflow-hidden bg-gradient-to-br from-gray-800/95 to-gray-900/98 backdrop-blur-lg border-gray-600/40 hover:shadow-2xl hover:shadow-orange-500/25 hover:from-gray-700/98 hover:to-gray-800/98 transition-all duration-300 group relative">
         {/* Artist Image */}
         <div className="relative h-48 overflow-hidden">
-          <img
+          <Image
             src={artist.image}
             alt={artist.name}
+            width={400}
+            height={192}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
