@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import Navigation from '../../../components/navigation';
 import { Button } from '@/components/ui/button';
 import { DataTable, type TableColumn } from '@/components/ui/table';
@@ -17,7 +18,8 @@ import {
   Users,
   DollarSign,
   TrendingUp,
-  Star
+  Star,
+  ArrowLeft
 } from 'lucide-react';
 import { artistsData, type Artist } from '../../../data/artists';
 
@@ -28,6 +30,7 @@ interface ExtendedArtist extends Artist {
 }
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedStatus, setSelectedStatus] = useState('All');
@@ -210,6 +213,18 @@ export default function DashboardPage() {
       <Navigation />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => router.back()}
+            className="flex items-center text-gray-300 hover:text-white bg-gray-800/50 backdrop-blur-md border border-gray-600/30 hover:bg-gray-700/50 transition-all duration-200 rounded-full w-10 h-10 p-0 justify-center"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+        </div>
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import ArtistCard from '../../../components/ArtistCard';
 import FilterBlock from '../../../components/FilterBlock';
 import Navigation from '../../../components/navigation';
@@ -10,6 +11,7 @@ import { Search, Grid, List, Filter, X, ArrowLeft } from 'lucide-react';
 import { artistsData, type Artist } from '../../../data/artists';
 
 export default function ArtistsPage() {
+  const router = useRouter();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedLocation, setSelectedLocation] = useState('All');
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
@@ -21,6 +23,7 @@ export default function ArtistsPage() {
   // Set default view mode based on screen size
   useEffect(() => {
     const checkScreenSize = () => {
+      if (typeof window === 'undefined') return;
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
       if (mobile) {
@@ -29,8 +32,10 @@ export default function ArtistsPage() {
     };
 
     checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', checkScreenSize);
+      return () => window.removeEventListener('resize', checkScreenSize);
+    }
   }, []);
 
   const artists: Artist[] = artistsData;
@@ -83,7 +88,7 @@ export default function ArtistsPage() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => window.history.back()}
+            onClick={() => router.back()}
             className="flex items-center text-gray-300 hover:text-white bg-gray-800/50 backdrop-blur-md border border-gray-600/30 hover:bg-gray-700/50 transition-all duration-200 rounded-full w-10 h-10 p-0 justify-center"
           >
             <ArrowLeft className="w-5 h-5" />

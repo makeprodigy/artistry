@@ -135,6 +135,7 @@ const throttle = <T extends unknown[]>(
 // Check if device is mobile for performance optimization
 const isMobileDevice = () => {
   if (typeof window === 'undefined') return false;
+  if (typeof navigator === 'undefined') return false;
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
 };
 
@@ -156,8 +157,9 @@ export default function Aurora(props: AuroraProps) {
   // Memoize performance settings
   const performanceSettings = useMemo(() => {
     const isMobile = isMobileDevice();
+    const devicePixelRatio = typeof window !== 'undefined' ? window.devicePixelRatio : 1;
     return {
-      pixelRatio: isMobile ? Math.min(window.devicePixelRatio, 1.5) : window.devicePixelRatio,
+      pixelRatio: isMobile ? Math.min(devicePixelRatio, 1.5) : devicePixelRatio,
       frameRate: isMobile ? 30 : 60,
       quality: isMobile ? 0.7 : 1.0,
     };
@@ -239,7 +241,9 @@ export default function Aurora(props: AuroraProps) {
       }, 150); // Debounce resize
     };
     
-    window.addEventListener("resize", handleResize, { passive: true });
+    if (typeof window !== 'undefined') {
+      window.addEventListener("resize", handleResize, { passive: true });
+    }
 
     const geometry = new Triangle(gl);
     if (geometry.attributes.uv) {
@@ -301,7 +305,9 @@ export default function Aurora(props: AuroraProps) {
     animationIdRef.current = requestAnimationFrame(update);
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener("resize", handleResize);
+      }
       clearTimeout(resizeTimeout);
       cleanup();
     };

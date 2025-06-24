@@ -3,6 +3,7 @@
 import React, { useState } from "react"
 import { useForm, Controller } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
+import { useRouter } from "next/navigation"
 import * as yup from "yup"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -43,6 +44,7 @@ const feeRanges = [
 ]
 
 export default function OnboardingPage() {
+  const router = useRouter();
   const [currentSection, setCurrentSection] = useState(0)
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([])
@@ -173,7 +175,7 @@ export default function OnboardingPage() {
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => window.history.back()}
+            onClick={() => router.back()}
             className="flex items-center text-gray-300 hover:text-white bg-gray-800/50 backdrop-blur-md border border-gray-600/30 hover:bg-gray-700/50 transition-all duration-200 rounded-full w-10 h-10 p-0 justify-center"
           >
             <ArrowLeft className="w-5 h-5" />
