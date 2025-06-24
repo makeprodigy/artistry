@@ -60,6 +60,9 @@ export default function ArtistCard({ artist, index = 0, viewMode = 'grid' }: Art
                 width={192}
                 height={128}
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                onError={() => console.log('Image failed to load:', artist.image)}
+                placeholder="blur"
+                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R6Dh1rlgDPfCpAk8V6dVa5+uxXQbcjwNDqGwZxMZ6JCZgJGdEMK8DFCWpWGv2+RrTXC8cTxqCOBz6aOAk99/qNkQw8mgaQvJ2Q="
               />
               <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/20 via-transparent to-transparent md:to-black/20" />
               
@@ -270,6 +273,9 @@ export default function ArtistCard({ artist, index = 0, viewMode = 'grid' }: Art
             width={400}
             height={192}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            onError={() => console.log('Image failed to load:', artist.image)}
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R6Dh1rlgDPfCpAk8V6dVa5+uxXQbcjwNDqGwZxMZ6JCZgJGdEMK8DFCWpWGv2+RrTXC8cTxqCOBz6aOAk99/qNkQw8mgaQvJ2Q="
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
           

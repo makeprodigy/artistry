@@ -113,6 +113,9 @@ export default function DashboardPage() {
             width={40}
             height={40}
             className="w-10 h-10 rounded-full object-cover"
+            onError={() => console.log('Dashboard image failed to load:', artist.image)}
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R6Dh1rlgDPfCpAk8V6dVa5+uxXQbcjwNDqGwZxMZ6JCZgJGdEMK8DFCWpWGv2+RrTXC8cTxqCOBz6aOAk99/qNkQw8mgaQvJ2Q="
           />
           <div>
             <div className="font-medium text-white">{artist.name}</div>
