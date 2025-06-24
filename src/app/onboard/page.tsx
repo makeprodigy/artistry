@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Badge } from "@/components/ui/badge"
+import Image from "next/image"
 import { Upload, X, ChevronLeft, ChevronRight, ArrowLeft } from "lucide-react"
 
 // Form validation schema
@@ -256,9 +257,11 @@ export default function OnboardingPage() {
                     <div className="mt-1">
                       {profileImagePreview ? (
                         <div className="relative inline-block">
-                          <img
+                          <Image
                             src={profileImagePreview}
                             alt="Profile preview"
+                            width={128}
+                            height={128}
                             className="w-32 h-32 object-cover rounded-lg border border-orange-500/30"
                           />
                           <Button

@@ -99,7 +99,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
         <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center">
           <div className="text-center text-white p-8">
             <h2 className="text-2xl font-bold mb-4">Something went wrong</h2>
-            <p className="text-gray-300 mb-6">We're sorry, but there was an error loading this page.</p>
+            <p className="text-gray-300 mb-6">We&apos;re sorry, but there was an error loading this page.</p>
             <Button 
               onClick={() => window.location.reload()}
               className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600"
@@ -263,10 +263,24 @@ export default function Home() {
   return (
     <ErrorBoundary>
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black prevent-cls">
+
+
+
+
+
       {/* Navigation */}
+
       <Navigation />
 
+
+
+
+
+
+
       {/* Hero Section */}
+
+      
       <section className="relative overflow-hidden" aria-label="Hero section with main call-to-action">
         {/* Aurora Background */}
         <div className="absolute inset-0 w-full h-full overflow-hidden performance-layer">
@@ -437,7 +451,16 @@ export default function Home() {
         </div>
       </section>
 
+
+
+
+
+
+
+
       {/* Artist Categories Section */}
+
+
       <section id="explore" className="py-16 md:py-24 bg-gradient-to-b from-gray-900/50 to-gray-800/30" aria-label="Artist categories to explore">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
@@ -461,6 +484,14 @@ export default function Home() {
               Find the perfect artist for your event from our diverse community of talented performers
             </motion.p>
           </motion.div>
+
+
+
+
+
+
+
+
 
           {/* Category Cards */}
           <motion.div 
@@ -535,6 +566,13 @@ export default function Home() {
         </div>
       </section>
 
+
+
+
+
+
+
+
       {/* Onboard Artist Section */}
       <section id="onboard" className="py-16 md:py-24 bg-gradient-to-r from-gray-800/60 to-gray-900/60" aria-label="Artist onboarding information">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -576,6 +614,12 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
+
+
+
+
+
+
 
       {/* Footer */}
       <motion.footer 
@@ -623,6 +667,9 @@ export default function Home() {
           </motion.div>
         </div>
       </motion.footer>
+
+
+      
 
       </div>
     </ErrorBoundary>

@@ -175,6 +175,7 @@ export default function Aurora(props: AuroraProps) {
 
   // Throttled update function for mobile devices
   const throttledUpdate = useCallback(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     throttle((program: Program, time: number) => {
       const { time: propTime = time * 0.01, speed = 1.0 } = propsRef.current;
       program.uniforms.uTime.value = propTime * speed * 0.1;
@@ -311,7 +312,7 @@ export default function Aurora(props: AuroraProps) {
       clearTimeout(resizeTimeout);
       cleanup();
     };
-  }, [amplitude, blend, processedColorStops, performanceSettings, throttledUpdate, cleanup]);
+  }, [amplitude, blend, colorStops, processedColorStops, performanceSettings, throttledUpdate, cleanup]);
 
   // Cleanup on unmount
   useEffect(() => {

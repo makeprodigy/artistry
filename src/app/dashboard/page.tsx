@@ -7,6 +7,7 @@ import Navigation from '../../../components/navigation';
 import { Button } from '@/components/ui/button';
 import { DataTable, type TableColumn } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import Image from 'next/image';
 import { 
   Search, 
   Filter, 
@@ -106,9 +107,11 @@ export default function DashboardPage() {
       label: 'Artist Name',
       render: (artist) => (
         <div className="flex items-center space-x-3">
-          <img 
+          <Image 
             src={artist.image} 
             alt={artist.name}
+            width={40}
+            height={40}
             className="w-10 h-10 rounded-full object-cover"
           />
           <div>
