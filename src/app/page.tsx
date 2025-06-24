@@ -1,4 +1,5 @@
 import Navigation from "../../components/navigation";
+import CountUp from "../../components/CountUp";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -82,19 +83,62 @@ export default function Home() {
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-2xl mx-auto">
               <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-gray-900">3.6K+</div>
+                <div className="text-2xl md:text-3xl font-bold text-gray-900">
+                  <CountUp
+                    from={0}
+                    to={3600}
+                    separator=","
+                    direction="up"
+                    duration={1.9}
+                    delay={0.5}
+                    className="count-up-text"
+                  />
+                  +
+                </div>
                 <div className="text-sm text-gray-600">Active Artists</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-gray-900">12K+</div>
+                <div className="text-2xl md:text-3xl font-bold text-gray-900">
+                  <CountUp
+                    from={0}
+                    to={12000}
+                    separator=","
+                    direction="up"
+                    duration={2.1}
+                    delay={0.8}
+                    className="count-up-text"
+                  />
+                  +
+                </div>
                 <div className="text-sm text-gray-600">Events Booked</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-gray-900">50+</div>
+                <div className="text-2xl md:text-3xl font-bold text-gray-900">
+                  <CountUp
+                    from={0}
+                    to={50}
+                    direction="up"
+                    duration={2.2}
+                    delay={1.1}
+                    className="count-up-text"
+                  />
+                  +
+                </div>
                 <div className="text-sm text-gray-600">Countries</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-gray-900">4.9★</div>
+                <div className="text-2xl md:text-3xl font-bold text-gray-900">
+                  <CountUp
+                    from={0}
+                    to={4.9}
+                    direction="up"
+                    duration={2.0}
+                    delay={1.4}
+                    decimals={1}
+                    className="count-up-text"
+                  />
+                  ★
+                </div>
                 <div className="text-sm text-gray-600">Average Rating</div>
               </div>
             </div>
