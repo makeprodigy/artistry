@@ -7,51 +7,164 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion, useInView } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef, Component, ErrorInfo, ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import { 
-  Star, 
   Users, 
   UserCheck,
   UserPlus,
-  Sparkles
+  Sparkles,
+  Mic,
+  Music2,
+  Headphones,
+  MessageSquare,
+  Play,
+  Zap
 } from "lucide-react";
+
+// Constants for design system
+const COLORS = {
+  gradients: {
+    singers: {
+      light: "from-orange-500/20 to-pink-500/20",
+      dark: "from-orange-500 to-pink-500",
+      border: "border-orange-500/30 hover:border-orange-400/50",
+      button: "border-orange-500/50 bg-gradient-to-r from-orange-500/20 to-pink-500/20 hover:from-orange-500 hover:to-pink-500 hover:border-orange-300"
+    },
+    dancers: {
+      light: "from-purple-500/20 to-violet-500/20",
+      dark: "from-purple-500 to-violet-500",
+      border: "border-purple-500/30 hover:border-purple-400/50",
+      button: "border-purple-500/50 bg-gradient-to-r from-purple-500/20 to-violet-500/20 hover:from-purple-500 hover:to-violet-500 hover:border-purple-300"
+    },
+    djs: {
+      light: "from-emerald-500/20 to-teal-500/20",
+      dark: "from-emerald-500 to-teal-500",
+      border: "border-emerald-500/30 hover:border-emerald-400/50",
+      button: "border-emerald-500/50 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 hover:from-emerald-500 hover:to-teal-500 hover:border-emerald-300"
+    },
+    speakers: {
+      light: "from-amber-500/20 to-yellow-500/20",
+      dark: "from-amber-500 to-yellow-500",
+      border: "border-amber-500/30 hover:border-amber-400/50",
+      button: "border-amber-500/50 bg-gradient-to-r from-amber-500/20 to-yellow-500/20 hover:from-amber-500 hover:to-yellow-500 hover:border-amber-300"
+    }
+  }
+} as const;
+
+const ANIMATION = {
+  durations: {
+    fast: 0.3,
+    normal: 0.5,
+    slow: 0.8
+  },
+  spring: {
+    stiffness: 300,
+    damping: 30
+  },
+  stagger: {
+    children: 0.15,
+    delay: 0.05
+  }
+} as const;
+
+// Error Boundary Component
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error?: Error;
+}
+
+interface ErrorBoundaryProps {
+  children: ReactNode;
+  fallback?: ReactNode;
+}
+
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error('Component error caught by boundary:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback || (
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center">
+          <div className="text-center text-white p-8">
+            <h2 className="text-2xl font-bold mb-4">Something went wrong</h2>
+            <p className="text-gray-300 mb-6">We're sorry, but there was an error loading this page.</p>
+            <Button 
+              onClick={() => window.location.reload()}
+              className="bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600"
+              aria-label="Reload page to try again"
+            >
+              Try Again
+            </Button>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 
 const artistCategories = [
   {
     title: "Singers",
     description: "Vocal artists across all genres - from pop to classical, indie to opera",
-    icon: "🎤",
+    icon: Mic,
     count: "1,250+",
     featured: "Taylor Swift, Ed Sheeran",
-    color: "bg-gradient-to-br from-orange-50 to-pink-100 border-orange-200 hover:border-orange-300"
+    gradient: COLORS.gradients.singers.light,
+    iconGradient: COLORS.gradients.singers.dark,
+    borderColor: COLORS.gradients.singers.border,
+    buttonIcon: Play
   },
   {
     title: "Dancers",
     description: "Professional dancers - ballet, hip-hop, contemporary, and more",
-    icon: "💃",
+    icon: Music2,
     count: "980+",
     featured: "Martha Graham Company",
-    color: "bg-gradient-to-br from-purple-50 to-violet-100 border-purple-200 hover:border-purple-300"
+    gradient: COLORS.gradients.dancers.light,
+    iconGradient: COLORS.gradients.dancers.dark,
+    borderColor: COLORS.gradients.dancers.border,
+    buttonIcon: Zap
   },
   {
     title: "DJs",
     description: "Electronic music producers and live performance DJs",
-    icon: "🎧",
+    icon: Headphones,
     count: "750+",
     featured: "Calvin Harris, Deadmau5",
-    color: "bg-gradient-to-br from-emerald-50 to-teal-100 border-emerald-200 hover:border-emerald-300"
+    gradient: COLORS.gradients.djs.light,
+    iconGradient: COLORS.gradients.djs.dark,
+    borderColor: COLORS.gradients.djs.border,
+    buttonIcon: Users
   },
   {
     title: "Speakers",
     description: "Motivational speakers, keynote presenters, and thought leaders",
-    icon: "🎙️",
+    icon: MessageSquare,
     count: "620+",
     featured: "Tony Robbins, Brené Brown",
-    color: "bg-gradient-to-br from-amber-50 to-yellow-100 border-amber-200 hover:border-amber-300"
+    gradient: COLORS.gradients.speakers.light,
+    iconGradient: COLORS.gradients.speakers.dark,
+    borderColor: COLORS.gradients.speakers.border,
+    buttonIcon: Sparkles
   }
 ];
 
 export default function Home() {
+  const router = useRouter();
 
   // Refs for scroll animations
   const categoriesRef = useRef(null);
@@ -81,19 +194,7 @@ export default function Home() {
     amount: 0.1 
   });
 
-  // Optimized smooth scroll function with reduced motion support
-  // const scrollToSection = (sectionId: string) => {
-  //   const element = document.getElementById(sectionId);
-  //   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    
-  //   if (element) {
-  //     element.scrollIntoView({ 
-  //       behavior: prefersReducedMotion ? 'auto' : 'smooth',
-  //       block: 'start',
-  //       inline: 'nearest'
-  //     });
-  //   }
-  // };
+
 
   // Optimized animation variants with hardware acceleration
   const containerVariants = {
@@ -101,8 +202,8 @@ export default function Home() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15, // Reduced stagger for smoother feel
-        delayChildren: 0.05
+        staggerChildren: ANIMATION.stagger.children,
+        delayChildren: ANIMATION.stagger.delay
       }
     }
   };
@@ -110,7 +211,7 @@ export default function Home() {
   const itemVariants = {
     hidden: { 
       opacity: 0, 
-      y: 30, // Reduced distance for smoother motion
+      y: 30,
       scale: 0.95
     },
     visible: {
@@ -118,10 +219,10 @@ export default function Home() {
       y: 0,
       scale: 1,
       transition: {
-        duration: 0.5, // Shorter duration
+        duration: ANIMATION.durations.normal,
         type: "spring" as const,
-        stiffness: 300,
-        damping: 30
+        stiffness: ANIMATION.spring.stiffness,
+        damping: ANIMATION.spring.damping
       }
     }
   };
@@ -129,15 +230,15 @@ export default function Home() {
   const cardVariants = {
     hidden: { 
       opacity: 0, 
-      y: 40, // Reduced distance
-      scale: 0.95 // Less aggressive scaling
+      y: 40,
+      scale: 0.95
     },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
       transition: {
-        duration: 0.5, // Shorter duration
+        duration: ANIMATION.durations.normal,
         type: "spring" as const,
         stiffness: 260,
         damping: 25
@@ -148,7 +249,7 @@ export default function Home() {
   const fadeUpVariants = {
     hidden: { 
       opacity: 0, 
-      y: 25 // Reduced distance
+      y: 25
     },
     visible: {
       opacity: 1,
@@ -160,12 +261,13 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black prevent-cls">
+    <ErrorBoundary>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black prevent-cls">
       {/* Navigation */}
       <Navigation />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden" aria-label="Hero section with main call-to-action">
         {/* Aurora Background */}
         <div className="absolute inset-0 w-full h-full overflow-hidden performance-layer">
           <Aurora
@@ -227,7 +329,8 @@ export default function Home() {
               <Button 
                 size="lg" 
                 className="px-10 py-5 text-lg font-semibold bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 shadow-2xl hover:shadow-orange-500/25 transition-all duration-300 group"
-                onClick={() => window.location.href = '/artists'}
+                onClick={() => router.push('/artists')}
+                aria-label="Browse and view all available artists"
               >
                 <UserCheck className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform duration-300" />
                 View Artists
@@ -235,7 +338,8 @@ export default function Home() {
               <Button 
                 size="lg" 
                 className="px-10 py-5 text-lg font-semibold bg-gradient-to-r from-purple-500 to-violet-500 hover:from-purple-600 hover:to-violet-600 text-white border-0 shadow-2xl hover:shadow-purple-500/25 transition-all duration-300 group"
-                onClick={() => window.location.href = '/onboard'}
+                onClick={() => router.push('/onboard')}
+                aria-label="Sign up to join our platform as an artist"
               >
                 <UserPlus className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform duration-300" />
                 Join as Artist
@@ -334,7 +438,7 @@ export default function Home() {
       </section>
 
       {/* Artist Categories Section */}
-      <section id="explore" className="py-16 md:py-24 bg-gradient-to-b from-gray-900/50 to-gray-800/30">
+      <section id="explore" className="py-16 md:py-24 bg-gradient-to-b from-gray-900/50 to-gray-800/30" aria-label="Artist categories to explore">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
           <motion.div 
@@ -373,37 +477,56 @@ export default function Home() {
                 custom={index}
               >
                 <Card 
-                  className={`group hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 cursor-pointer border-2 bg-gray-800/50 backdrop-blur-sm h-[420px] flex flex-col ${category.color.replace('bg-gradient-to-br from-orange-50 to-pink-100 border-orange-200 hover:border-orange-300', 'border-orange-500/30 hover:border-orange-400/50').replace('bg-gradient-to-br from-purple-50 to-violet-100 border-purple-200 hover:border-purple-300', 'border-purple-500/30 hover:border-purple-400/50').replace('bg-gradient-to-br from-emerald-50 to-teal-100 border-emerald-200 hover:border-emerald-300', 'border-emerald-500/30 hover:border-emerald-400/50').replace('bg-gradient-to-br from-amber-50 to-yellow-100 border-amber-200 hover:border-amber-300', 'border-amber-500/30 hover:border-amber-400/50')}`}
+                  className={`group hover:shadow-2xl hover:shadow-orange-500/10 transition-all duration-500 hover:-translate-y-3 cursor-pointer border-2 bg-gradient-to-br ${category.gradient} backdrop-blur-lg h-[480px] flex flex-col ${category.borderColor} hover:scale-[1.02]`}
                 >
-                  <CardHeader className="text-center pb-2 flex-shrink-0">
-                    <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
-                      {category.icon}
+                  <CardHeader className="text-center pb-0 flex-shrink-0 p-6">
+                    {/* Icon Container with Gradient Background */}
+                    <div className="relative mb-4">
+                      <div className={`w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br ${category.iconGradient} p-5 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg`}>
+                        <category.icon className="w-full h-full text-white drop-shadow-lg" strokeWidth={1.5} />
+                      </div>
+                      {/* Glow Effect */}
+                      <div className={`absolute inset-0 w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br ${category.iconGradient} opacity-0 group-hover:opacity-20 blur-xl transition-all duration-500`}></div>
                     </div>
-                    <CardTitle className="text-xl font-bold text-white mb-2">
+                    
+                    <CardTitle className="text-xl font-bold text-white mb-3">
                       {category.title}
                     </CardTitle>
-                    <Badge className="w-fit mx-auto bg-gradient-to-r from-orange-500/20 to-pink-500/20 text-orange-200 border-orange-400/30">
+                    <Badge className={`w-fit mx-auto bg-gradient-to-r ${category.gradient} text-white border border-white/20 backdrop-blur-sm font-semibold px-3 py-1`}>
                       {category.count} artists
                     </Badge>
                   </CardHeader>
-                  <CardContent className="text-center flex-1 flex flex-col justify-between">
-                    <div className="flex-1">
-                      <CardDescription className="text-white mb-4 leading-relaxed">
+                  
+                  <CardContent className="flex-1 flex flex-col p-6 pt-0">
+                    <div className="h-32 space-y-4 flex flex-col">
+                      <CardDescription className="text-gray-200 leading-relaxed text-sm flex-1 flex items-center">
                         {category.description}
                       </CardDescription>
-                      <div className="text-sm text-white mb-6">
-                        <strong>Featured:</strong> {category.featured}
+                      <div className="text-sm text-gray-300 p-3 rounded-lg bg-white/5 backdrop-blur-sm flex-1 flex items-center">
+                        <span><strong className="text-white">Featured:</strong> {category.featured}</span>
                       </div>
                     </div>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="w-full border-orange-400/30 text-orange-300 hover:bg-gradient-to-r hover:from-orange-500 hover:to-pink-500 hover:text-white hover:border-transparent transition-all duration-300 group mt-auto"
-                      onClick={() => window.location.href = '/artists'}
-                    >
-                      <Users className="w-4 h-4 mr-1 group-hover:scale-110 transition-transform duration-200" />
-                      Explore {category.title}
-                    </Button>
+                    
+                    <div className="mt-6 flex-shrink-0">
+                      {(() => {
+                        const baseButtonClass = "w-full border-2 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-300 group/btn hover:shadow-lg hover:shadow-current/20 ";
+                        const categoryKey = category.title.toLowerCase() as keyof typeof COLORS.gradients;
+                        const buttonClass = baseButtonClass + COLORS.gradients[categoryKey].button;
+                        
+                        return (
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className={buttonClass}
+                            onClick={() => router.push('/artists')}
+                            aria-label={`Explore ${category.title} - Browse ${category.count} available ${category.title.toLowerCase()}`}
+                          >
+                            <category.buttonIcon className="w-4 h-4 mr-2 group-hover/btn:scale-110 transition-transform duration-200" />
+                            Explore {category.title}
+                          </Button>
+                        );
+                      })()}
+                    </div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -413,7 +536,7 @@ export default function Home() {
       </section>
 
       {/* Onboard Artist Section */}
-      <section id="onboard" className="py-16 md:py-24 bg-gradient-to-r from-gray-800/60 to-gray-900/60">
+      <section id="onboard" className="py-16 md:py-24 bg-gradient-to-r from-gray-800/60 to-gray-900/60" aria-label="Artist onboarding information">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div 
             ref={onboardRef}
@@ -442,7 +565,8 @@ export default function Home() {
               <Button 
                 size="lg" 
                 className="px-10 py-5 text-lg font-semibold bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 text-white border-0 shadow-xl hover:shadow-orange-500/25 transition-all duration-300 group"
-                onClick={() => window.location.href = '/onboard'}
+                onClick={() => router.push('/onboard')}
+                aria-label="Join as artist - Start your artist onboarding process"
               >
                 <Sparkles className="w-6 h-6 mr-3 group-hover:scale-110 transition-transform duration-300" />
                 Join as Artist
@@ -500,8 +624,7 @@ export default function Home() {
         </div>
       </motion.footer>
 
-
-
-    </div>
+      </div>
+    </ErrorBoundary>
   );
 }
