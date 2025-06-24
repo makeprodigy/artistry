@@ -37,7 +37,9 @@ export default function FilterBlock({
   totalResults
 }: FilterBlockProps) {
   const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
+  const [locationDropdownOpen, setLocationDropdownOpen] = useState(false);
   const categoryDropdownRef = useRef<HTMLDivElement>(null);
+  const locationDropdownRef = useRef<HTMLDivElement>(null);
   
   const hasActiveFilters = selectedCategories.length > 0 || selectedLocation !== 'All' || 
     priceRange[0] > 0 || priceRange[1] < maxPrice;
@@ -50,11 +52,14 @@ export default function FilterBlock({
     }
   };
 
-  // Close dropdown when clicking outside
+  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (categoryDropdownRef.current && !categoryDropdownRef.current.contains(event.target as Node)) {
         setCategoryDropdownOpen(false);
+      }
+      if (locationDropdownRef.current && !locationDropdownRef.current.contains(event.target as Node)) {
+        setLocationDropdownOpen(false);
       }
     };
 
@@ -213,19 +218,45 @@ export default function FilterBlock({
           </div>
 
           {/* Location Filter */}
-          <div>
+          <div className="relative z-40">
             <h3 className="font-semibold text-white mb-3">Location</h3>
-            <select
-              value={selectedLocation}
-              onChange={(e) => onLocationChange(e.target.value)}
-              className="w-full p-3 bg-gray-700/95 backdrop-blur-sm border border-gray-600/50 rounded-lg text-white text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent hover:bg-gray-600/95 transition-all duration-200"
-            >
-              {locations.map((location) => (
-                <option key={location} value={location} className="bg-gray-700 text-white">
-                  {location}
-                </option>
-              ))}
-            </select>
+            <div className="relative" ref={locationDropdownRef}>
+              <button
+                onClick={() => setLocationDropdownOpen(!locationDropdownOpen)}
+                className="w-full p-3 bg-gray-700/95 backdrop-blur-sm border border-gray-600/50 rounded-lg text-white text-sm text-left flex items-center justify-between focus:ring-2 focus:ring-orange-500 focus:border-transparent hover:bg-gray-600/95 transition-all duration-200 relative z-40"
+              >
+                <span>
+                  {selectedLocation}
+                </span>
+                <ChevronDown className={`w-4 h-4 transition-transform ${locationDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {locationDropdownOpen && (
+                <div className="absolute z-[9998] w-full mt-1 bg-gray-700/98 backdrop-blur-sm border border-gray-600/50 rounded-lg shadow-2xl shadow-gray-900/70 max-h-40 overflow-y-auto">
+                  {locations.map((location) => (
+                    <div
+                      key={location}
+                      onClick={() => {
+                        onLocationChange(location);
+                        setLocationDropdownOpen(false);
+                      }}
+                      className={`flex items-center gap-3 p-3 hover:bg-gray-600 cursor-pointer text-sm text-white ${
+                        selectedLocation === location ? 'bg-gray-600/50' : ''
+                      }`}
+                    >
+                      <div className={`w-4 h-4 border border-gray-400 rounded-full flex items-center justify-center ${
+                        selectedLocation === location ? 'bg-gradient-to-r from-orange-500 to-pink-500 border-transparent' : ''
+                      }`}>
+                        {selectedLocation === location && (
+                          <div className="w-2 h-2 bg-white rounded-full" />
+                        )}
+                      </div>
+                      {location}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Active Filters */}
