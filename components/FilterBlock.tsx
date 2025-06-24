@@ -70,7 +70,7 @@ export default function FilterBlock({
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Card className="bg-gray-800/95 backdrop-blur-lg border-gray-600/40 shadow-2xl shadow-gray-900/60 max-h-[calc(100vh-8rem)] flex flex-col relative">
+      <Card className="bg-gray-800/95 backdrop-blur-lg border-gray-600/40 shadow-2xl shadow-gray-900/60 max-h-[calc(100vh-8rem)] flex flex-col relative overflow-visible">
         <CardHeader className="pb-4 flex-shrink-0">
           <div className="flex items-center justify-between mb-3">
             <CardTitle className="flex items-center gap-2 text-lg font-bold text-white">
@@ -96,14 +96,14 @@ export default function FilterBlock({
           </div>
         </CardHeader>
 
-        <CardContent className="space-y-4 overflow-y-auto flex-1 px-6">
+        <CardContent className="space-y-4 overflow-y-visible flex-1 px-6">
           {/* Category Filter */}
-          <div>
+          <div className="relative z-50">
             <h3 className="font-semibold text-white mb-3">Category</h3>
             <div className="relative" ref={categoryDropdownRef}>
               <button
                 onClick={() => setCategoryDropdownOpen(!categoryDropdownOpen)}
-                className="w-full p-3 bg-gray-700/95 backdrop-blur-sm border border-gray-600/50 rounded-lg text-white text-sm text-left flex items-center justify-between focus:ring-2 focus:ring-orange-500 focus:border-transparent hover:bg-gray-600/95 transition-all duration-200"
+                className="w-full p-3 bg-gray-700/95 backdrop-blur-sm border border-gray-600/50 rounded-lg text-white text-sm text-left flex items-center justify-between focus:ring-2 focus:ring-orange-500 focus:border-transparent hover:bg-gray-600/95 transition-all duration-200 relative z-50"
               >
                 <span>
                   {selectedCategories.length === 0 
@@ -115,7 +115,7 @@ export default function FilterBlock({
               </button>
               
               {categoryDropdownOpen && (
-                <div className="absolute z-10 w-full mt-1 bg-gray-700/98 backdrop-blur-sm border border-gray-600/50 rounded-lg shadow-2xl shadow-gray-900/70 max-h-40 overflow-y-auto">
+                <div className="absolute z-[9999] w-full mt-1 bg-gray-700/98 backdrop-blur-sm border border-gray-600/50 rounded-lg shadow-2xl shadow-gray-900/70 max-h-40 overflow-y-auto">
                   {categories.map((category) => (
                     <div
                       key={category}
