@@ -258,7 +258,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Framer Motion** - For smooth animations
 - **Radix UI** - For accessible component primitives
 - **Lucide** - For beautiful icons
-
----
-
-**Built with ❤️ by the Artistry Team**
